@@ -1,5 +1,5 @@
-// var connection=window.connection
-import {connection} from './index.js'
+var connection=global.connection;
+
 function getCity(req,res){
     var sid=req.params.id;
     connection.query(`select * from city where STATE_ID=${sid};`,(err,rows)=>{
@@ -36,7 +36,7 @@ function insertLocation(req,res){
             console.log(err);
         }
         console.log(results)
-        res.json.send(results);
+        res.send(results);
     })
 }
 
