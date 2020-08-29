@@ -1,5 +1,6 @@
-var connection=global.connection;
-
+// eslint-disable-next-line no-undef
+// var connection=global.connection;
+// console.log(connection)
 function getCity(req,res){
     var sid=req.params.id;
     connection.query(`select * from city where STATE_ID=${sid};`,(err,rows)=>{
