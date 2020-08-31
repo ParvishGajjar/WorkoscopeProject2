@@ -4,7 +4,7 @@ var router=express.Router()
 
 router.route('/getcountry').get(api.getCountry)
 
-router.route('getstate/:cid').get(api.getState)
+router.route('/getstate/:cid').get(api.getState)
 
 router.route('/getcity/:sid').get(api.getCity)
 

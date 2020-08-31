@@ -19,6 +19,8 @@ app.use(_express.default.json());
 
 const locationapis = require("./locationroutes.js");
 
+const similarplatformapis = require("./similarplatformroutes.js");
+
 var connection = _mysql.default.createConnection({
   host: "localhost",
   user: "root",
@@ -37,6 +39,7 @@ connection.connect(function (err) {
 const query = util.promisify(connection.query).bind(connection);
 exports.query = query;
 app.use("/api/location", locationapis);
+app.use("/api/similarplatform", similarplatformapis);
 app.listen(3400, err => {
   if (err) {
     return console.log("Error: " + err);

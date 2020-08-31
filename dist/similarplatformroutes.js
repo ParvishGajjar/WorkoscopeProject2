@@ -12,8 +12,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var router = _express.default.Router();
 
-router.route('/getcountry').get(api.getCountry);
-router.route('/getstate/:cid').get(api.getState);
-router.route('/getcity/:sid').get(api.getCity);
-router.route('/insertlocation').post(api.insertLocation);
+router.get('/getsimilarplatforms', api.getSimilarPlatforms);
+router.post('/insertplatform', api.insertPlatform);
 module.exports = router;

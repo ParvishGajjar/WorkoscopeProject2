@@ -7,6 +7,8 @@ exports.getCity = getCity;
 exports.getState = getState;
 exports.getCountry = getCountry;
 exports.insertLocation = insertLocation;
+exports.getSimilarPlatforms = getSimilarPlatforms;
+exports.insertPlatform = insertPlatform;
 
 var _index = require("./index.js");
 
@@ -45,7 +47,7 @@ async function getState(req, res) {
     if (Number.isInteger(cid)) {
       const state = await (0, _index.query)(`select * from state where COUNTRY_ID=${cid};`);
 
-      if (_.isEmpty(state)) {
+      if (_.isEmpty(state) && Number.isInteger(state[0]["STATE_ID"]) && typeof state !== "undefined") {
         console.log(state);
         res.end(JSON.stringify(state));
       } else {
@@ -81,7 +83,7 @@ async function insertLocation(req, res) {
     if (Number.isInteger(req.body.empid) && Number.isInteger(req.body.countryid) && Number.isInteger(req.body.stateid) && Number.isInteger(req.body.cityid)) {
       const insertLoc = await (0, _index.query)(`insert into emploc (EMP_ID,COUNTRY_ID,STATE_ID,CITY_ID) values (${req.body.empid},${req.body.countryid},${req.body.stateid},${req.body.cityid});`);
 
-      if (!_.isEmpty(insertLoc) && (insertLoc["insertId"] !== 'null' || insertLoc["insertId"] !== 'undefined')) {
+      if (!_.isEmpty(insertLoc) && (insertLoc["insertId"] !== "null" || insertLoc["insertId"] !== "undefined")) {
         console.log(insertLoc);
         res.send(insertLoc);
       } else {
@@ -89,6 +91,54 @@ async function insertLocation(req, res) {
       }
     } else {
       throw "Body Parameter are Invalid";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+}
+
+async function getSimilarPlatforms(req, res) {
+  try {
+    const simplatform = await (0, _index.query)(`select * from similarplatform`);
+
+    if (!_.isEmpty(simplatform)) {
+      console.log(simplatform);
+      res.end(JSON.stringify(simplatform));
+    } else {
+      throw "Error fetching similar platforms";
+    }
+  } catch (err) {
+    console.log(err);
+    res.end(err);
+  }
+}
+
+function insertPlatform(req, res) {
+  try {
+    if (Number.isInteger(req.body.empid) && req.body.selectedplatforms !== null) {
+      req.body.selectedplatforms.forEach(item => {
+        insertplatformdata(req.body.empid, item, res);
+      });
+      console.log("Data Inserted");
+      res.send("Data Inserted");
+    } else {
+      throw "Error Detected";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+}
+
+async function insertplatformdata(empid, pid, res) {
+  try {
+    const insertp = await (0, _index.query)(`insert into plat_emp values(${empid},${pid});`);
+
+    if (!_.isEmpty(insertp)) {
+      console.log(insertp);
+    } else {
+      throw "Error: Couldn't Insert Data";
     }
   } catch (err) {
     console.log(err);
