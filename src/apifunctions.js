@@ -95,54 +95,61 @@ async function insertLocation(req, res) {
   }
 }
 
-async function getSimilarPlatforms(req,res){
-    try{
-        const simplatform=await query(`select * from similarplatform`)
-        if(!(_.isEmpty(simplatform))){
-            console.log(simplatform)
-            res.end(JSON.stringify(simplatform))
-        }
-        else{
-            throw "Error fetching similar platforms"
-        }
-    }catch(err){
-        console.log(err)
-        res.end(err)
+async function getSimilarPlatforms(req, res) {
+  try {
+    const simplatform = await query(`select * from similarplatform`);
+    if (!_.isEmpty(simplatform)) {
+      console.log(simplatform);
+      res.end(JSON.stringify(simplatform));
+    } else {
+      throw "Error fetching similar platforms";
     }
+  } catch (err) {
+    console.log(err);
+    res.end(err);
+  }
 }
-function insertPlatform(req,res){
-    try{
-        if(Number.isInteger(req.body.empid) && req.body.selectedplatforms !== null){
-            req.body.selectedplatforms.forEach((item)=>{
-                insertplatformdata(req.body.empid,item,res);
-            })
-            console.log("Data Inserted")
-            res.send("Data Inserted")
-        }
-        else{
-            throw "Error Detected"
-        }
+function insertPlatform(req, res) {
+  try {
+    if (
+      Number.isInteger(req.body.empid) &&
+      req.body.selectedplatforms !== null
+    ) {
+      req.body.selectedplatforms.forEach((item) => {
+        insertplatformdata(req.body.empid, item, res);
+      });
+      console.log("Data Inserted");
+      res.send("Data Inserted");
+    } else {
+      throw "Error Detected";
     }
-    catch(err){
-        console.log(err);
-        res.send(err)
-    }
-}
-
-async function insertplatformdata(empid,pid,res){
-    try{
-        const insertp= await query(`insert into plat_emp values(${empid},${pid});`)
-        if(!(_.isEmpty(insertp))){
-            console.log(insertp);
-        }
-        else{
-            throw "Error: Couldn't Insert Data"
-        }
-    }
-    catch(err){
-        console.log(err)
-        res.send(err)
-    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 }
 
-export { getCity, getState, getCountry, insertLocation, getSimilarPlatforms, insertPlatform };
+async function insertplatformdata(empid, pid, res) {
+  try {
+    const insertp = await query(
+      `insert into plat_emp values(${empid},${pid});`
+    );
+    if (!_.isEmpty(insertp)) {
+      console.log(insertp);
+    } else {
+      throw "Error: Couldn't Insert Data";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+}
+
+export {
+  getCity,
+  getState,
+  getCountry,
+  insertLocation,
+  getSimilarPlatforms,
+  insertPlatform,
+};
