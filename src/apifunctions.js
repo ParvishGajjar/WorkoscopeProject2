@@ -29,7 +29,11 @@ async function getState(req, res) {
     var cid = parseInt(req.params.cid);
     if (Number.isInteger(cid)) {
       const state = await query(`select * from state where COUNTRY_ID=${cid};`);
-      if (_.isEmpty(state)) {
+      if (
+        _.isEmpty(state) &&
+        Number.isInteger(state[0]["STATE_ID"]) &&
+        typeof state !== "undefined"
+      ) {
         console.log(state);
         res.end(JSON.stringify(state));
       } else {
@@ -72,15 +76,17 @@ async function insertLocation(req, res) {
       const insertLoc = await query(
         `insert into emploc (EMP_ID,COUNTRY_ID,STATE_ID,CITY_ID) values (${req.body.empid},${req.body.countryid},${req.body.stateid},${req.body.cityid});`
       );
-      if(!(_.isEmpty(insertLoc)) && (insertLoc["insertId"] !== 'null' || insertLoc["insertId"] !== 'undefined')) {
+      if (
+        !_.isEmpty(insertLoc) &&
+        (insertLoc["insertId"] !== "null" ||
+          insertLoc["insertId"] !== "undefined")
+      ) {
         console.log(insertLoc);
         res.send(insertLoc);
+      } else {
+        throw "Error Detected: Couldn't Insert Data";
       }
-      else {
-        throw "Error Detected: Couldn't Insert Data"
-      }
-    } 
-    else {
+    } else {
       throw "Body Parameter are Invalid";
     }
   } catch (err) {
