@@ -8,51 +8,90 @@ exports.getState = getState;
 exports.getCountry = getCountry;
 exports.insertLocation = insertLocation;
 
-// eslint-disable-next-line no-undef
-// var connection=global.connection;
-// console.log(connection)
-function getCity(req, res) {
-  var sid = req.params.id;
-  connection.query(`select * from city where STATE_ID=${sid};`, (err, rows) => {
-    if (err) {
-      console.log(err);
-    }
+var _index = require("./index.js");
 
-    console.log(rows);
-    res.end(JSON.stringify(rows));
-  });
+var _ = _interopRequireWildcard(require("lodash"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+async function getCity(req, res) {
+  try {
+    var sid = parseInt(req.params.sid);
+
+    if (Number.isInteger(sid)) {
+      const city = await (0, _index.query)(`select * from city where STATE_ID=${sid};`);
+
+      if (!_.isEmpty(city) && Number.isInteger(city[0]["CITY_ID"]) && typeof city !== "undefined") {
+        console.log(city);
+        res.end(JSON.stringify(city));
+      } else {
+        throw "Error fetching city";
+      }
+    } else {
+      throw "Error Detected, State Value is not integer";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 }
 
-function getState(req, res) {
-  var cid = req.params.id;
-  connection.query(`select * from state where COUNTRY_ID=${cid};`, (err, rows) => {
-    if (err) {
-      console.log(err);
-    }
+async function getState(req, res) {
+  try {
+    var cid = parseInt(req.params.cid);
 
-    console.log(rows);
-    res.end(JSON.stringify(rows));
-  });
+    if (Number.isInteger(cid)) {
+      const state = await (0, _index.query)(`select * from state where COUNTRY_ID=${cid};`);
+
+      if (_.isEmpty(state)) {
+        console.log(state);
+        res.end(JSON.stringify(state));
+      } else {
+        throw "Error Detected: Couldn't fetch states.";
+      }
+    } else {
+      throw "Error Detected";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 }
 
-function getCountry(req, res) {
-  connection.query(`select * from country;`, (err, rows) => {
-    if (err) {
-      console.log(err);
-    }
+async function getCountry(req, res) {
+  try {
+    const country = await (0, _index.query)(`select * from country;`);
 
-    console.log(rows);
-    res.end(JSON.stringify(rows));
-  });
+    if (!_.isEmpty(country) && Number.isInteger(country[0]["COUNTRY_ID"]) && typeof country[0]["COUNTRY_NAME"] === "string") {
+      console.log(country);
+      res.end(JSON.stringify(country));
+    } else {
+      throw "Error: Incorrect fetch";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 }
 
-function insertLocation(req, res) {
-  connection.query(`insert into emploc (EMP_ID,COUNTRY_ID,STATE_ID,CITY_ID) values (${req.body.empid},${req.body.countryid},${req.body.stateid},${req.body.cityid});`, (err, results) => {
-    if (err) {
-      console.log(err);
-    }
+async function insertLocation(req, res) {
+  try {
+    if (Number.isInteger(req.body.empid) && Number.isInteger(req.body.countryid) && Number.isInteger(req.body.stateid) && Number.isInteger(req.body.cityid)) {
+      const insertLoc = await (0, _index.query)(`insert into emploc (EMP_ID,COUNTRY_ID,STATE_ID,CITY_ID) values (${req.body.empid},${req.body.countryid},${req.body.stateid},${req.body.cityid});`);
 
-    console.log(results);
-    res.send(results);
-  });
+      if (!_.isEmpty(insertLoc) && (insertLoc["insertId"] !== 'null' || insertLoc["insertId"] !== 'undefined')) {
+        console.log(insertLoc);
+        res.send(insertLoc);
+      } else {
+        throw "Error Detected: Couldn't Insert Data";
+      }
+    } else {
+      throw "Body Parameter are Invalid";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 }

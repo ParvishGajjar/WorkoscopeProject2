@@ -23,6 +23,7 @@
   "homepage": "https://github.com/ParvishGajjar/WorkoscopeProject2#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "lodash": "^4.17.20",
     "mysql": "^2.18.1"
   },
   "devDependencies": {
