@@ -1,12 +1,14 @@
 import { query } from "./index.js";
 import * as _ from "lodash";
+
+// Functiion to fetch all cities.
 async function getCity(req, res) {
   try {
     var sid = parseInt(req.params.sid);
     if (Number.isInteger(sid)) {
       const city = await query(`select * from city where STATE_ID=${sid};`);
       if (
-        !_.isEmpty(city) &&
+        !(_.isEmpty(city)) &&
         Number.isInteger(city[0]["CITY_ID"]) &&
         typeof city !== "undefined"
       ) {
@@ -24,13 +26,14 @@ async function getCity(req, res) {
   }
 }
 
+// Function to fetch all states.
 async function getState(req, res) {
   try {
     var cid = parseInt(req.params.cid);
     if (Number.isInteger(cid)) {
       const state = await query(`select * from state where COUNTRY_ID=${cid};`);
       if (
-        _.isEmpty(state) &&
+        !(_.isEmpty(state)) &&
         Number.isInteger(state[0]["STATE_ID"]) &&
         typeof state !== "undefined"
       ) {
@@ -47,11 +50,13 @@ async function getState(req, res) {
     res.send(err);
   }
 }
+
+// Function to fetch all countries.
 async function getCountry(req, res) {
   try {
     const country = await query(`select * from country;`);
     if (
-      !_.isEmpty(country) &&
+      !(_.isEmpty(country)) &&
       Number.isInteger(country[0]["COUNTRY_ID"]) &&
       typeof country[0]["COUNTRY_NAME"] === "string"
     ) {
@@ -65,6 +70,8 @@ async function getCountry(req, res) {
     res.send(err);
   }
 }
+
+// Function to insert user location.
 async function insertLocation(req, res) {
   try {
     if (
@@ -95,10 +102,11 @@ async function insertLocation(req, res) {
   }
 }
 
+// Function to get similar location.
 async function getSimilarPlatforms(req, res) {
   try {
     const simplatform = await query(`select * from similarplatform`);
-    if (!_.isEmpty(simplatform)) {
+    if (!(_.isEmpty(simplatform))) {
       console.log(simplatform);
       res.end(JSON.stringify(simplatform));
     } else {
@@ -109,6 +117,8 @@ async function getSimilarPlatforms(req, res) {
     res.end(err);
   }
 }
+
+// Function to insert similar platforms.
 function insertPlatform(req, res) {
   try {
     if (
@@ -129,12 +139,13 @@ function insertPlatform(req, res) {
   }
 }
 
+// Function which will get called to insert data querybyquery. 
 async function insertplatformdata(empid, pid, res) {
   try {
     const insertp = await query(
       `insert into plat_emp values(${empid},${pid});`
     );
-    if (!_.isEmpty(insertp)) {
+    if (!(_.isEmpty(insertp))) {
       console.log(insertp);
     } else {
       throw "Error: Couldn't Insert Data";
