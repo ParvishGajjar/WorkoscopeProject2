@@ -9,6 +9,7 @@ exports.getCountry = getCountry;
 exports.insertLocation = insertLocation;
 exports.getSimilarPlatforms = getSimilarPlatforms;
 exports.insertPlatform = insertPlatform;
+exports.professiondata = professiondata;
 
 var _index = require("./index.js");
 
@@ -18,6 +19,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+// Functiion to fetch all cities.
 async function getCity(req, res) {
   try {
     var sid = parseInt(req.params.sid);
@@ -38,7 +40,8 @@ async function getCity(req, res) {
     console.log(err);
     res.send(err);
   }
-}
+} // Function to fetch all states.
+
 
 async function getState(req, res) {
   try {
@@ -47,7 +50,7 @@ async function getState(req, res) {
     if (Number.isInteger(cid)) {
       const state = await (0, _index.query)(`select * from state where COUNTRY_ID=${cid};`);
 
-      if (_.isEmpty(state) && Number.isInteger(state[0]["STATE_ID"]) && typeof state !== "undefined") {
+      if (!_.isEmpty(state) && Number.isInteger(state[0]["STATE_ID"]) && typeof state !== "undefined") {
         console.log(state);
         res.end(JSON.stringify(state));
       } else {
@@ -60,7 +63,8 @@ async function getState(req, res) {
     console.log(err);
     res.send(err);
   }
-}
+} // Function to fetch all countries.
+
 
 async function getCountry(req, res) {
   try {
@@ -76,7 +80,8 @@ async function getCountry(req, res) {
     console.log(err);
     res.send(err);
   }
-}
+} // Function to insert user location.
+
 
 async function insertLocation(req, res) {
   try {
@@ -96,7 +101,8 @@ async function insertLocation(req, res) {
     console.log(err);
     res.send(err);
   }
-}
+} // Function to get similar location.
+
 
 async function getSimilarPlatforms(req, res) {
   try {
@@ -112,7 +118,8 @@ async function getSimilarPlatforms(req, res) {
     console.log(err);
     res.end(err);
   }
-}
+} // Function to insert similar platforms.
+
 
 function insertPlatform(req, res) {
   try {
@@ -129,7 +136,8 @@ function insertPlatform(req, res) {
     console.log(err);
     res.send(err);
   }
-}
+} // Function which will get called to insert data querybyquery.
+
 
 async function insertplatformdata(empid, pid, res) {
   try {
@@ -139,6 +147,56 @@ async function insertplatformdata(empid, pid, res) {
       console.log(insertp);
     } else {
       throw "Error: Couldn't Insert Data";
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+} // {
+// 	"empid":1,
+// 	"Purpose":"Employer",
+// 	"ProfTitle":"Python Developer",
+// 	"CompName":"ABC",
+// 	"url":"www.abc.com"
+// }
+
+
+async function professiondata(req, res) {
+  try {
+    const id = req.body.empid;
+    const purpose = req.body.Purpose;
+    const Proftitle = req.body.ProfTitle;
+    const compname = req.body.CompName;
+    const url = req.body.url;
+    console.log(typeof id + " " + typeof purpose + " " + typeof Proftitle + " " + typeof compname + " " + typeof url);
+
+    if (Number.isInteger(id)) {
+      console.log("its int");
+
+      if (purpose === "Employer" && Proftitle !== "" && Proftitle !== null && Proftitle !== undefined && _.isString(Proftitle) && compname !== "" && compname !== null && compname !== undefined && _.isString(compname) && url !== "" && url !== null && url !== undefined && _.isString(url)) {
+        console.log("OK run queries");
+        const result = await (0, _index.query)(`insert into EmpFL values (${id},'${purpose}'); insert into ProfessionData values ('${id}','${Proftitle}','${compname}','${url}');`, [1, 2]);
+
+        if (!_.isEmpty(result) && result !== undefined) {
+          console.log(result);
+          res.send(result);
+        } else {
+          throw "Error: Couldn't run query";
+        }
+      } else if (purpose === "Free Lancer" && Proftitle !== "" && Proftitle !== null && Proftitle !== undefined && _.isString(Proftitle)) {
+        const result = await (0, _index.query)(`insert into EmpFL values (${id},'${purpose}'); insert into ProfessionData values ('${id}','${Proftitle}','${compname}','${url}');`, [1, 2]);
+
+        if (!_.isEmpty(result) && result !== undefined) {
+          console.log(result);
+          res.send(result);
+        } else {
+          throw "Error: Couldn't run query";
+        }
+      } else {
+        throw "Error Detected";
+      }
+    } else {
+      throw "Error Detected";
     }
   } catch (err) {
     console.log(err);

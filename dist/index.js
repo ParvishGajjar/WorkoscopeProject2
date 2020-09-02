@@ -21,11 +21,14 @@ const locationapis = require("./locationroutes.js");
 
 const similarplatformapis = require("./similarplatformroutes.js");
 
+const professionapis = require("./professionalroutes.js");
+
 var connection = _mysql.default.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "workone"
+  database: "workone",
+  multipleStatements: true
 });
 
 global.connection = connection;
@@ -40,6 +43,7 @@ const query = util.promisify(connection.query).bind(connection);
 exports.query = query;
 app.use("/api/location", locationapis);
 app.use("/api/similarplatform", similarplatformapis);
+app.use("/api/profession", professionapis);
 app.listen(3400, err => {
   if (err) {
     return console.log("Error: " + err);

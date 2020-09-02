@@ -7,12 +7,14 @@ app.use(express.json());
 
 const locationapis = require("./locationroutes.js");
 const similarplatformapis = require("./similarplatformroutes.js");
+const professionapis = require("./professionalroutes.js");
 
 var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
   database: "workone",
+  multipleStatements: true
 });
 
 global.connection = connection;
@@ -28,7 +30,8 @@ connection.connect(function (err) {
 export const query = util.promisify(connection.query).bind(connection);
 
 app.use("/api/location", locationapis);
-app.use("/api/similarplatform",similarplatformapis);
+app.use("/api/similarplatform", similarplatformapis);
+app.use("/api/profession", professionapis);
 
 app.listen(3400, (err) => {
   if (err) {
