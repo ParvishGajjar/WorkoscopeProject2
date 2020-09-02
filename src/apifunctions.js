@@ -171,19 +171,19 @@ async function professiondata(req, res) {
     const Proftitle = req.body.ProfTitle;
     const compname = req.body.CompName;
     const url = req.body.url;
-    console.log(
-      typeof id +
-        " " +
-        typeof purpose +
-        " " +
-        typeof Proftitle +
-        " " +
-        typeof compname +
-        " " +
-        typeof url
-    );
+    // console.log(
+    //   typeof id +
+    //     " " +
+    //     typeof purpose +
+    //     " " +
+    //     typeof Proftitle +
+    //     " " +
+    //     typeof compname +
+    //     " " +
+    //     typeof url
+    // );
     if (Number.isInteger(id)) {
-      console.log("its int");
+      // console.log("its int");
       if (
         purpose === "Employer" &&
         Proftitle !== "" &&
@@ -199,7 +199,7 @@ async function professiondata(req, res) {
         url !== undefined &&
         _.isString(url)
       ) {
-        console.log("OK run queries");
+        // console.log("OK run queries");
         const result = await query(
           `insert into EmpFL values (${id},'${purpose}'); insert into ProfessionData values ('${id}','${Proftitle}','${compname}','${url}');`,
           [1, 2]
