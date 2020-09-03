@@ -5,15 +5,16 @@ const util=require('util');
 var app = express();
 app.use(express.json());
 
-const locationapis = require("./locationroutes.js");
-const similarplatformapis = require("./similarplatformroutes.js");
-const professionapis = require("./professionalroutes.js");
+const locationapis = require("./routes/locationroutes.js");
+const similarplatformapis = require("./routes/similarplatformroutes.js");
+const professionapis = require("./routes/professionalroutes.js");
+const wageskillsapis = require("./routes/wageskillroutes.js");
 
 var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "workone",
+  host: "52.15.61.22",
+  user: "test",
+  password: "test",
+  database: "workoscope",
   multipleStatements: true
 });
 
@@ -32,6 +33,7 @@ export const query = util.promisify(connection.query).bind(connection);
 app.use("/api/location", locationapis);
 app.use("/api/similarplatform", similarplatformapis);
 app.use("/api/profession", professionapis);
+app.use("/api/pagefour",wageskillsapis);
 
 app.listen(3400, (err) => {
   if (err) {

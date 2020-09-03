@@ -1,6 +1,6 @@
 "use strict";
 
-var api = _interopRequireWildcard(require("./apifunctions.js"));
+var api = _interopRequireWildcard(require("../apifunctions/locationfunctions.js"));
 
 var _express = _interopRequireDefault(require("express"));
 
@@ -12,8 +12,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var router = _express.default.Router();
 
-router.route('/getcountry').get(api.getCountry);
-router.route('/getstate/:cid').get(api.getState);
-router.route('/getcity/:sid').get(api.getCity);
-router.route('/insertlocation').post(api.insertLocation);
+router.get('/getcountry', api.getCountry);
+router.get('/getstate/:cid', api.getState);
+router.get('/getcity/:sid', api.getCity);
+router.post('/insertlocation', api.insertLocation);
 module.exports = router;

@@ -1,6 +1,6 @@
 "use strict";
 
-var api = _interopRequireWildcard(require("./apifunctions.js"));
+var api = _interopRequireWildcard(require("../apifunctions/wageskillfunction.js"));
 
 var _express = _interopRequireDefault(require("express"));
 
@@ -12,6 +12,5 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var router = _express.default.Router();
 
-router.get('/getsimilarplatforms', api.getSimilarPlatforms);
-router.post('/insertplatform', api.insertPlatform);
+router.post('/wageskills', api.wageskilldata);
 module.exports = router;
