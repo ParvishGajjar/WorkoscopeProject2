@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.getSimilarPlatforms = getSimilarPlatforms;
 exports.insertPlatform = insertPlatform;
 
-var _index = require("../index.js");
+var _index = require("../../index.js");
 
-var _apivalidations = require("./apivalidations.js");
+var _apivalidations = require("../../Validation/apivalidations.js");
 
 var _ = _interopRequireWildcard(require("lodash"));
 

@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.wageskilldata = wageskilldata;
 
-var _index = require("../index.js");
+var _index = require("../../index.js");
 
-var _apivalidations = require("./apivalidations.js");
+var _apivalidations = require("../../Validation/apivalidations.js");
 
 var _ = _interopRequireWildcard(require("lodash"));
 

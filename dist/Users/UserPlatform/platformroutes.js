@@ -1,6 +1,6 @@
 "use strict";
 
-var api = _interopRequireWildcard(require("../apifunctions/platformfunctions.js"));
+var api = _interopRequireWildcard(require("./platformfunctions.js"));
 
 var _express = _interopRequireDefault(require("express"));
 

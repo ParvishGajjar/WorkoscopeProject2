@@ -1,4 +1,4 @@
-import * as api from '../apifunctions/professionfunction.js'
+import * as api from './professionfunctions.js'
 import express from 'express'
 var router=express.Router()
 

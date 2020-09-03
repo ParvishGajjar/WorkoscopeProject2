@@ -1,6 +1,6 @@
 "use strict";
 
-var api = _interopRequireWildcard(require("../apifunctions/locationfunctions.js"));
+var api = _interopRequireWildcard(require("./locationfunctions.js"));
 
 var _express = _interopRequireDefault(require("express"));
 

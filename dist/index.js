@@ -17,13 +17,13 @@ const util = require('util');
 var app = (0, _express.default)();
 app.use(_express.default.json());
 
-const locationapis = require("./routes/locationroutes.js");
+const locationapis = require("./Users/UserLocation/locationroutes.js");
 
-const similarplatformapis = require("./routes/similarplatformroutes.js");
+const similarplatformapis = require("./Users/UserPlatform/platformroutes.js");
 
-const professionapis = require("./routes/professionalroutes.js");
+const professionapis = require("./Users/UserProfession/professionroutes.js");
 
-const wageskillsapis = require("./routes/wageskillroutes.js");
+const wageskillsapis = require("./Users/UserWageSkill/wageskillroutes.js");
 
 var connection = _mysql.default.createConnection({
   host: "52.15.61.22",

@@ -1,4 +1,4 @@
-import * as api from '../apifunctions/locationfunctions.js'
+import * as api from './locationfunctions.js'
 import express from 'express'
 var router=express.Router()
 

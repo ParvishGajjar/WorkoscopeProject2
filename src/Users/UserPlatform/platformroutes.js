@@ -1,4 +1,4 @@
-import * as api from '../apifunctions/platformfunctions.js'
+import * as api from './platformfunctions.js'
 import express from 'express'
 var router=express.Router()
 

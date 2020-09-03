@@ -1,24 +1,6 @@
 import * as _ from "lodash";
 
-// function intNotEmpty(val){
-//     if(_.isInteger(val) && val !== null && val !== undefined){
-//         return true;
-//     }
-//     return false;
-// }
-// function stringNotEmpty(val){
-//     if(!_.isEmpty(val) && val !== null && val !== undefined && _.isString(val)){
-//         return true;
-//     }
-//     return false;
-// }
-// function objectNotEmpty(val){
-//     if(!_.isEmpty(val) && val !== null && val !== undefined){
-//         return true;
-//     }
-//     return false;
-// }
-
+// Variable is not Empty
 function notEmpty(val) {
   if (typeof val === "number") {
     //Number Validation

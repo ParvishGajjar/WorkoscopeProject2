@@ -1,6 +1,6 @@
 "use strict";
 
-var api = _interopRequireWildcard(require("../apifunctions/wageskillfunction.js"));
+var api = _interopRequireWildcard(require("./wageskillfunctions.js"));
 
 var _express = _interopRequireDefault(require("express"));
 

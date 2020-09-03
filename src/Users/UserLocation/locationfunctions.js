@@ -1,5 +1,5 @@
-import { query } from "../index.js";
-import { notEmpty } from "./apivalidations.js";
+import { query } from "../../index.js";
+import { notEmpty } from "../../Validation/apivalidations.js";
 import * as _ from "lodash";
 
 // Functiion to fetch all cities.
@@ -33,7 +33,7 @@ async function getState(req, res) {
       );
       if (notEmpty(state)) {
         console.log(state);
-        res.end(JSON.stringify(state));
+        res.status(200).json(`State fetched: ${JSON.stringify(state)}`);
       } else {
         throw "Error Detected: Couldn't fetch states.";
       }
@@ -52,7 +52,7 @@ async function getCountry(req, res) {
     const country = await query(`select * from countries;`);
     if (notEmpty(country)) {
       console.log(country);
-      res.end(JSON.stringify(country));
+      res.status(200).json({message:`Country data fetched: ${JSON.stringify(country)}`});
     } else {
       throw "Error: Incorrect fetch";
     }
@@ -89,9 +89,4 @@ async function insertLocation(req, res) {
   }
 }
 
-export {
-    getCity,
-    getState,
-    getCountry,
-    insertLocation
-}
+export { getCity, getState, getCountry, insertLocation };

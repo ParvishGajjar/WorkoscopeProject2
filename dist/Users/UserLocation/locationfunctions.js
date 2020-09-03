@@ -8,9 +8,9 @@ exports.getState = getState;
 exports.getCountry = getCountry;
 exports.insertLocation = insertLocation;
 
-var _index = require("../index.js");
+var _index = require("../../index.js");
 
-var _apivalidations = require("./apivalidations.js");
+var _apivalidations = require("../../Validation/apivalidations.js");
 
 var _ = _interopRequireWildcard(require("lodash"));
 
@@ -51,7 +51,7 @@ async function getState(req, res) {
 
       if ((0, _apivalidations.notEmpty)(state)) {
         console.log(state);
-        res.end(JSON.stringify(state));
+        res.status(200).json(`State fetched: ${JSON.stringify(state)}`);
       } else {
         throw "Error Detected: Couldn't fetch states.";
       }
@@ -71,7 +71,9 @@ async function getCountry(req, res) {
 
     if ((0, _apivalidations.notEmpty)(country)) {
       console.log(country);
-      res.end(JSON.stringify(country));
+      res.status(200).json({
+        message: `Country data fetched: ${JSON.stringify(country)}`
+      });
     } else {
       throw "Error: Incorrect fetch";
     }

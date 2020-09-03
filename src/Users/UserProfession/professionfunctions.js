@@ -1,5 +1,5 @@
-import { query } from "../index.js";
-import { notEmpty } from "./apivalidations.js";
+import { query } from "../../index.js";
+import { notEmpty } from "../../Validation/apivalidations.js";
 import * as _ from "lodash";
 
 

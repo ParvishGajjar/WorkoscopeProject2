@@ -1,4 +1,4 @@
-import * as api from '../apifunctions/wageskillfunction.js'
+import * as api from './wageskillfunctions.js'
 import express from 'express'
 var router=express.Router()
 

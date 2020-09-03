@@ -5,10 +5,10 @@ const util=require('util');
 var app = express();
 app.use(express.json());
 
-const locationapis = require("./routes/locationroutes.js");
-const similarplatformapis = require("./routes/similarplatformroutes.js");
-const professionapis = require("./routes/professionalroutes.js");
-const wageskillsapis = require("./routes/wageskillroutes.js");
+const locationapis = require("./Users/UserLocation/locationroutes.js");
+const similarplatformapis = require("./Users/UserPlatform/platformroutes.js");
+const professionapis = require("./Users/UserProfession/professionroutes.js");
+const wageskillsapis = require("./Users/UserWageSkill/wageskillroutes.js");
 
 var connection = mysql.createConnection({
   host: "52.15.61.22",
