@@ -4,53 +4,115 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.professiondata = professiondata;
+exports.updateprofession = updateprofession;
 
 var _index = require("../../index.js");
 
 var _apivalidations = require("../../Validation/apivalidations.js");
 
-var _ = _interopRequireWildcard(require("lodash"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
+// import _ from "lodash";
 // Insert Profession Details
 async function professiondata(req, res) {
   try {
-    const id = req.body.empid;
-    const purpose = req.body.Purpose;
-    const Proftitle = req.body.ProfTitle;
-    const compname = req.body.CompName;
-    const url = req.body.url;
+    let uid = req.body.uid;
+    let usertype = req.body.usertype;
+    let proftitle = req.body.proftitle;
+    let company = req.body.company;
+    let website = req.body.website;
 
-    if ((0, _apivalidations.notEmpty)(id)) {
-      if (purpose === "Employer" && (0, _apivalidations.notEmpty)(Proftitle) && (0, _apivalidations.notEmpty)(compname) && (0, _apivalidations.notEmpty)(url)) {
-        const result = await (0, _index.query)(`insert into EmpFL values (${id},'${purpose}'); insert into ProfessionData values ('${id}','${Proftitle}','${compname}','${url}');`, [1, 2]);
+    if ((0, _apivalidations.notEmpty)(uid)) {
+      if (usertype == "1" && (0, _apivalidations.notEmpty)(proftitle) && (0, _apivalidations.notEmpty)(company) && (0, _apivalidations.validateURL)(website)) {
+        const result = await (0, _index.query)(`insert into user_profile (uid,usertype,proftitle,company,website) values (${uid},${usertype},'${proftitle}','${company}','${website}');`);
 
         if ((0, _apivalidations.notEmpty)(result)) {
           console.log(result);
-          res.send(result);
+          res.status(200).json({
+            data: true,
+            message: `Data Inserted`,
+            status: true
+          });
         } else {
-          throw "Error: Couldn't run query";
+          throw "Couldn't Insert Data";
         }
-      } else if (purpose === "Free Lancer" && (0, _apivalidations.notEmpty)(Proftitle)) {
-        const result = await (0, _index.query)(`insert into EmpFL values (${id},'${purpose}'); insert into ProfessionData values ('${id}','${Proftitle}','${compname}','${url}');`, [1, 2]);
+      } else if (usertype == "2" && (0, _apivalidations.notEmpty)(proftitle)) {
+        const result = await (0, _index.query)(`insert into user_profile (uid,usertype,proftitle,company,website) values (${uid},${usertype},'${proftitle}','${company}','${website}');`);
 
         if ((0, _apivalidations.notEmpty)(result)) {
           console.log(result);
-          res.send(result);
+          res.status(200).json({
+            data: true,
+            message: `Data Inserted`,
+            status: true
+          });
         } else {
-          throw "Error: Couldn't run query";
+          throw "Couldn't Insert Data";
         }
       } else {
-        throw "Error Detected";
+        throw "Invalid Data";
       }
     } else {
-      throw "Error Detected";
+      throw "Invalid UserID";
     }
   } catch (err) {
     console.log(err);
-    res.send(err);
+    res.status(404).json({
+      data: false,
+      message: `Error: ${err}`,
+      status: false
+    });
+  }
+} // {
+//   "uid":1,
+//   "usertype":2,     // 1 - Employer; 2 - Free Lancer
+//   "proftitle":"Pyhton Developer",
+//   "company":"",
+//   "website":""
+// }
+
+
+async function updateprofession(req, res) {
+  try {
+    let uid = req.body.uid;
+    let usertype = req.body.usertype;
+    let proftitle = req.body.proftitle;
+    let company = req.body.company;
+    let website = req.body.website;
+
+    if ((0, _apivalidations.notEmpty)(uid)) {
+      if (usertype == "1" && (0, _apivalidations.notEmpty)(proftitle) && (0, _apivalidations.notEmpty)(company) && (0, _apivalidations.validateURL)(website)) {
+        const result = await (0, _index.query)(`update user_profile set usertype=${usertype},proftitle='${proftitle}',company='${company}',website='${website}' where userid=${uid};`);
+
+        if ((0, _apivalidations.notEmpty)(result)) {
+          console.log("Data Updated");
+          res.status(200).json({
+            data: true,
+            message: `Data Updated`,
+            status: true
+          });
+        }
+      } else if (usertype == "2" && (0, _apivalidations.notEmpty)(proftitle) && (0, _apivalidations.notUndefined)(company) && (0, _apivalidations.validateURL)(website)) {
+        const result = await (0, _index.query)(`update user_profile set usertype=${usertype},proftitle='${proftitle}',company='${company}',website='${website}' where userid=${uid};`);
+
+        if ((0, _apivalidations.notEmpty)(result)) {
+          console.log("Data Updated");
+          res.status(200).json({
+            data: true,
+            message: `Data Updated`,
+            status: true
+          });
+        }
+      } else {
+        throw "Couldn't Update Profession";
+      }
+    } else {
+      throw "UserID Invalid";
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      data: false,
+      message: `Error: ${err}`,
+      status: false
+    });
   }
 }

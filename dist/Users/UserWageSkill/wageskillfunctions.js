@@ -18,47 +18,52 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // insert wage skills data
 async function wageskilldata(req, res) {
   try {
-    const empid = req.body.empid;
-    const wage = req.body.wage;
-    const service = req.body.service;
+    const uid = req.body.uid;
+    const perhour = req.body.perhour;
+    const serviceid = req.body.serviceid;
     const skills = req.body.skills;
 
-    if ((0, _apivalidations.notEmpty)(empid)) {
-      if ((0, _apivalidations.notEmpty)(wage) && (0, _apivalidations.notEmpty)(service) && (0, _apivalidations.notEmpty)(skills)) {
-        var result = await (0, _index.query)(`insert into wageperhour values (${empid},${wage}); insert into serviceprovide values(${empid},'${service}');`, [1, 2]);
+    if ((0, _apivalidations.notEmpty)(uid)) {
+      if ((0, _apivalidations.notEmpty)(perhour) && (0, _apivalidations.notEmpty)(serviceid) && (0, _apivalidations.notEmpty)(skills)) {
+        var result = await (0, _index.query)(`insert into user_profile (userid,perhour) values (${uid},${perhour}); insert into user_services (serviceid,uid) values(${serviceid},${uid});`, [1, 2]);
         skills.forEach(item => {
-          insertskilldata(empid, item);
+          insertskilldata(uid, item);
         });
 
         if ((0, _apivalidations.notEmpty)(result)) {
           console.log(result);
           res.send(result);
         } else {
-          throw "Error running query";
+          throw "Couldn't Insert Data";
         }
       } else {
-        throw "Error: Empid isn't integer";
+        throw "Invalid UserID";
       }
     } else {
       throw "Error Detected";
     }
   } catch (err) {
     console.log(err);
-    res.send(err);
+    res.status(404).json({
+      data: false,
+      message: `Error: ${err}`,
+      status: false
+    });
   }
 }
 
 async function insertskilldata(id, skillid) {
   try {
-    const result = await (0, _index.query)(`insert into skillempone values(${id},${skillid})`);
+    const result = await (0, _index.query)(`insert into user_skills (userid,skills) values (${id},${skillid})`);
 
     if (!_.isEmpty(result)) {
       console.log(result);
       console.log("Data Inserted for " + id);
     } else {
-      throw "Error Found while inserting";
+      throw `Couldn't Insert Data for UserID: ${id}`;
     }
   } catch (err) {
     console.log(err);
+    throw err;
   }
 }
